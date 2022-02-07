@@ -1,4 +1,4 @@
-![Logo](readme-asset/icon-landscape-256-64.png)
+![Logo](readme-asset/icon-landscape-192-64.png)
 
 <span style="font-family:Trebuchet MS, sans-serif;">
 
