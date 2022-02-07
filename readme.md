@@ -16,6 +16,7 @@
 9. [Running application](https://github.com/murtidaryandono/example-web-basic#9-running-application) <br/>
 10. [Tools](https://github.com/murtidaryandono/example-web-basic#10-tools) <br/>
 11. [Author](https://github.com/murtidaryandono/example-web-basic#11-author)
+---
 
 ### 1. Version
 
@@ -91,13 +92,49 @@ B --- |Logging| G[SL4J]
         <script src="/static/js/htmx.min.js"></script>
       </head>
       <body>
-        <div id="to-do-list">
-           ...
+        <div>
+            <ul>
+                <!-- list of to-do here -->
+            </ul>
         </div>
       </body>
       ```
 
 2. Add to-do item on the list
+   - Path (POST) : "/add"
+   - Diagram
+     ```mermaid
+     sequenceDiagram
+     participant Requestor
+     participant Service
+     participant Controller
+     participant Page
+     Requestor ->> Service : HTTP POST request ("/add")
+     Service ->> Controller : Process request
+     Controller ->> Page : Load index.html
+     Page -->> Controller : Return index.html
+     Controller -->> Service : Process response
+     Service -->> Requestor : Render page
+     ```
+   - Response
+     ```html
+     <!DOCTYPE html>
+     <html lang="en">
+     <head>
+       <meta charset="UTF-8">
+       <title>To-do list application</title>
+       <link href="/static/css/bulma.min.css" rel="stylesheet"/>
+       <script src="/static/js/htmx.min.js"></script>
+       <link href="/static/img/favicon.ico" rel="shortcut icon" type="image/x-icon"> 
+     </head>
+     <body>
+       <div>
+           <ul>
+               <!-- list of to-do here -->
+           </ul>
+       </div>
+     </body>
+     ```
 
 3. Remove to-do item on the list
 
