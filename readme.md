@@ -29,11 +29,11 @@
 
 **Web example basic (project : example-web-basic)** is a sample project that intended to help Java developers create basic web application using Java
 based technologies based on MVC (Model View Controller) concept.
-In this sample project, some feature will be provided, such as :
+In this sample project, we will create to-do application with some feature will be provided, such as :
 - Page templating
 - Read environment properties
 - Service class based on business logic to-do list
-- Controller class to handle request and response
+- Controller class to handle request and response (show, add, remove & update to-do list)
 - Create UI for to-do list
 - Test application
 ---
@@ -66,7 +66,7 @@ B --- |Logging| G[SL4J]
 ### 5. Sequence diagram
 
 1. Index page
-    - Path (GET) : "/"
+    - Path (GET) : "/to-do"
     - Diagram
       ```mermaid
       sequenceDiagram
@@ -74,7 +74,7 @@ B --- |Logging| G[SL4J]
       participant Service
       participant Controller
       participant Page
-      Requestor ->> Service : HTTP GET request ("/")
+      Requestor ->> Service : HTTP GET request ("/to-do")
       Service ->> Controller : Process request
       Controller ->> Page : Load index.html
       Page -->> Controller : Return index.html
@@ -93,50 +93,63 @@ B --- |Logging| G[SL4J]
       </head>
       <body>
         <div>
-            <ul>
-                <!-- list of to-do here -->
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        ...
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <!-- list of to-do here -->
+                    </tr>
+                </tbody>
+            </table>
         </div>
       </body>
       ```
 
 2. Add to-do item on the list
-   - Path (POST) : "/add"
+   - Path (POST) : "/to-do"
+   - Query param : "to-do"
    - Diagram
      ```mermaid
      sequenceDiagram
      participant Requestor
      participant Service
      participant Controller
-     participant Page
-     Requestor ->> Service : HTTP POST request ("/add")
-     Service ->> Controller : Process request
-     Controller ->> Page : Load index.html
-     Page -->> Controller : Return index.html
-     Controller -->> Service : Process response
+     Requestor ->> Service : HTTP POST request ("/to-do")
+     Service ->> Controller : Add to-do list (query param "to-do")
+     Controller -->> Service : Return to-do list ("<li>...</li>")
      Service -->> Requestor : Render page
      ```
    - Response
      ```html
-     <!DOCTYPE html>
-     <html lang="en">
-     <head>
-       <meta charset="UTF-8">
-       <title>To-do list application</title>
-       <link href="/static/css/bulma.min.css" rel="stylesheet"/>
-       <script src="/static/js/htmx.min.js"></script>
-       <link href="/static/img/favicon.ico" rel="shortcut icon" type="image/x-icon"> 
-     </head>
-     <body>
-       <div>
-           <ul>
-               <!-- list of to-do here -->
-           </ul>
-       </div>
-     </body>
+     <tr>
+        <!-- to-do list -->
+     </tr>
      ```
 
 3. Remove to-do item on the list
+    - Path (DELETE) : "/to-do"
+    - Query param : "to-do-id"
+    - Diagram
+      ```mermaid
+      sequenceDiagram
+      participant Requestor
+      participant Service
+      participant Controller
+      Requestor ->> Service : HTTP DELETE request ("/to-do")
+      Service ->> Controller : Add to-do list (query param "to-do")
+      Controller -->> Service : Return to-do list ("<li>...</li>")
+      Service -->> Requestor : Render page
+      ```
+    - Response
+      ```html
+      <tr>
+         <!-- to-do list -->
+      </tr>
+      ```
 
 4. Update to-do item on the list
 
