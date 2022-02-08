@@ -1,7 +1,5 @@
 ![Logo](readme-asset/icon-landscape-192-64.png)
 
-<span style="font-family:Trebuchet MS, sans-serif;">
-
 ## Web example basic (to-do application)
 
 ### Table of contents </span>
@@ -9,13 +7,17 @@
 2. [Description](https://github.com/murtidaryandono/example-web-basic#2-description) <br/>
 3. [Technology stack](https://github.com/murtidaryandono/example-web-basic#3-technology-stack) <br/>
 4. [Architecture](https://github.com/murtidaryandono/example-web-basic#4-architecture) <br/>
-5. [Sequence diagram](https://github.com/murtidaryandono/example-web-basic#5-sequence-diagram) <br/>
-6. [Project structure](https://github.com/murtidaryandono/example-web-basic#6-project-structure) <br/>
-7. [Development steps](https://github.com/murtidaryandono/example-web-basic#7-development-steps) <br/>
-8. [Environment properties](https://github.com/murtidaryandono/example-web-basic#8-environment-properties) <br/>
-9. [Running application](https://github.com/murtidaryandono/example-web-basic#9-running-application) <br/>
-10. [Tools](https://github.com/murtidaryandono/example-web-basic#10-tools) <br/>
-11. [Author](https://github.com/murtidaryandono/example-web-basic#11-author)
+5. [Flow diagram](https://github.com/murtidaryandono/example-web-basic#5-flow-diagram) <br/>
+6. [Sequence diagram](https://github.com/murtidaryandono/example-web-basic#6-sequence-diagram) <br/>
+7. [Database design](https://github.com/murtidaryandono/example-web-basic#7-database-design) <br/>
+8. [API producer](https://github.com/murtidaryandono/example-web-basic#8-api-producer) <br/>
+9. [API consumer](https://github.com/murtidaryandono/example-web-basic#9-api-consumer) <br/>
+10. [Project structure](https://github.com/murtidaryandono/example-web-basic#10-project-structure) <br/>
+11. [Development steps](https://github.com/murtidaryandono/example-web-basic#11-development-steps) <br/>
+12. [Environment properties](https://github.com/murtidaryandono/example-web-basic#12-environment-properties) <br/>
+13. [Running application](https://github.com/murtidaryandono/example-web-basic#13-running-application) <br/>
+14. [Tools](https://github.com/murtidaryandono/example-web-basic#14-tools) <br/>
+15. [Author](https://github.com/murtidaryandono/example-web-basic#15-author)
 ---
 
 ### 1. Version
@@ -62,7 +64,7 @@ B --- |AJAX| H
 D --- |Page| H
 C --- |JVM| F[Java]
 B --- |Logging| G[SL4J]
-   subgraph Presentation
+   subgraph Presentation layer
    H[HTML] --- I[Htmx]
    H --- J[Bulma]
    H --- K[Font Awesome]
@@ -70,23 +72,29 @@ B --- |Logging| G[SL4J]
 ```
 ---
 
-### 5. Sequence diagram
+### 5. Flow diagram
+
+TBD
+
+---
+
+### 6. Sequence diagram
 
 1. Index page
-    - Path (GET) : "/to-do"
+    - Path (GET) : /todo
     - Diagram
       ```mermaid
       sequenceDiagram
       participant Requestor
-      participant Service
       participant Controller
+      participant Service
       participant Page
-      Requestor ->> Service : HTTP GET request ("/to-do")
-      Service ->> Controller : Process request
-      Controller ->> Page : Load index.html
-      Page -->> Controller : Return index.html
-      Controller -->> Service : Process response
-      Service -->> Requestor : Render page
+      Requestor ->> Controller : HTTP GET request "/todo"
+      Controller ->> Service : Process request
+      Service ->> Page : Load index.html
+      Page -->> Service : Return index.html
+      Service -->> Controller : Process response
+      Controller -->> Requestor : Render page
       ```
     - Response
       ```html
@@ -117,18 +125,18 @@ B --- |Logging| G[SL4J]
       ```
 
 2. Add to-do item on the list
-   - Path (POST) : "/to-do"
-   - Query param : "to-do"
+   - Path (POST) : /todo
+   - Query param : todoItem
    - Diagram
      ```mermaid
      sequenceDiagram
      participant Requestor
-     participant Service
      participant Controller
-     Requestor ->> Service : HTTP POST request ("/to-do")
-     Service ->> Controller : Add to-do list (query param "to-do")
-     Controller -->> Service : Return to-do list ("<li>...</li>")
-     Service -->> Requestor : Render page
+     participant Service
+     Requestor ->> Controller : HTTP POST request "/todo"
+     Controller ->> Service : Add to-do list (query param "todoItem")
+     Service -->> Controller : Return to-do list ("<tr>...</tr>")
+     Controller -->> Requestor : Render page
      ```
    - Response
      ```html
@@ -138,18 +146,18 @@ B --- |Logging| G[SL4J]
      ```
 
 3. Remove to-do item on the list
-    - Path (DELETE) : "/to-do"
-    - Query param : "to-do-id"
+    - Path (DELETE) : /todo
+    - Query param : todoId
     - Diagram
       ```mermaid
       sequenceDiagram
       participant Requestor
-      participant Service
       participant Controller
-      Requestor ->> Service : HTTP DELETE request ("/to-do")
-      Service ->> Controller : Add to-do list (query param "to-do")
-      Controller -->> Service : Return to-do list ("<li>...</li>")
-      Service -->> Requestor : Render page
+      participant Service
+      Requestor ->> Controller : HTTP DELETE request "/todo"
+      Controller ->> Service : Remove to-do list (query param "todoId")
+      Service -->> Controller : Return to-do list ("<tr>...</tr>")
+      Controller -->> Requestor : Render page
       ```
     - Response
       ```html
@@ -159,12 +167,57 @@ B --- |Logging| G[SL4J]
       ```
 
 4. Update to-do item on the list
+   - Path (PUT) : /todo
+   - Query param : todoId, todoItem
+   - Diagram
+     ```mermaid
+     sequenceDiagram
+     participant Requestor
+     participant Controller
+     participant Service
+     Requestor ->> Controller : HTTP PATCH request "/todo"
+     Controller ->> Service : Update to-do list (query param "todoId, todoItem")
+     Service -->> Controller : Return to-do list ("<tr>...</tr>")
+     Controller -->> Requestor : Render page
+     ```
+   - Response
+     ```html
+     <tr>
+        <!-- to-do list -->
+     </tr>
+     ```
 
-### 6. Project structure
+### 7. Database design
 
-### 7. Development steps
+N/A
 
-### 8. Environment properties
+---
+
+### 8. API producer
+
+N/A
+
+---
+
+### 9. API Consumer
+
+N/A
+
+---
+
+### 10. Project structure
+
+TBD
+
+---
+
+### 11. Development steps
+
+TBD
+
+---
+
+### 12. Environment properties
 
 | Environment | File properties | 
 | --- | --- |
@@ -184,7 +237,7 @@ mvc.statics.show-list=[true if you want to be show via url]
 ```
 ---
 
-### 9. Running application
+### 13. Running application
 
 - Run in development environment
 ```
@@ -200,7 +253,7 @@ java -jar target/web-example-basic.jar --app.env=prd
 ```
 ---
 
-### 10. Tools
+### 14. Tools
 
 - [Java 8]() as main language
 - [Maven]() as dependency manager
@@ -208,10 +261,8 @@ java -jar target/web-example-basic.jar --app.env=prd
 - [Mermaid]() as markdown plugin for diagram
 ---
 
-### 11. Author
+### 15. Author
 > name : Murti Daryandono <br/>
 email : murti.daryandono@gmail.com <br/>
 twitter : murti_d <br/>
 blog : https://daryandono.id
-
-</span>
