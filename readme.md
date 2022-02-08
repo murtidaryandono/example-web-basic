@@ -48,6 +48,7 @@ In this sample project, we will create to-do application with some feature will 
 - JUnit : Java unit test framework
 - Htmx : HTML framework ([Htmx link](https://htmx.org/))
 - Bulma : CSS framework ([Bulma link](https://bulma.io/))
+- Font Awesome : Font framework ([Font Awesome link](https://fontawesome.com/))
 ---
 
 ### 4. Architecture
@@ -57,9 +58,15 @@ graph TD
 A[Web browser] --- |Request/Response| B[Blade - Web framework]
 B --- |Server| C[Netty]
 B --- |Template| D[Jetbrick]
-D --- |AJAX| E[Htmx - JS & Bulma - CSS]
+B --- |AJAX| H
+D --- |Page| H
 C --- |JVM| F[Java]
 B --- |Logging| G[SL4J]
+   subgraph Presentation
+   H[HTML] --- I[Htmx]
+   H --- J[Bulma]
+   H --- K[Font Awesome]
+   end
 ```
 ---
 
